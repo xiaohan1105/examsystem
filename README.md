@@ -1,9 +1,6 @@
 # 网络在线考试系统
 
-基于Golang Web框架[Revel](https://revel.github.io/)开发的一整套线上考试系统, 欢迎fork使用\
-作者： 一小撮坏分子
-
-![首页](images/admin-examee-info.jpg)
+基于Golang Web框架[Revel](https://revel.github.io/)开发的一整套线上考试系统
 
 ## 功能：
 
@@ -40,35 +37,21 @@
 ```shell
 mongod --dbpath ~/mongodb-data/
 ```
-
 app.conf中已经配置好本地缺省的MongoDB uri地址，如果你想链接其他地址的MongoDB数据库，请在app.conf中修改下面配置
 
 ```shell
 [db] 
 uri = mongodb://localhost:27017
 ```
-
 配置管理员账号信息：app.conf(/examsystem/conf/app.conf)文件中的[administrator]节点，此账号是超级管理员级别，可以登录后创建别的管理员账号。
-
 ```shell
 [administrator]
 id_card = 533467199012268897 # 超级管理员账号，部署系统的时候配置上去就可以直接使用，此账号可以创建别的管理员账号
 password = 00002583 # 超级管理员账号密码
 ```
-
 终端进入项目所在目录的父目录执行下面命令启动本地服务：
-
 ```shell
 revel run examsystem
 ```
 
 浏览器中打开[http://localhost:9000/](http://localhost:9000/)进入系统首页\
-![首页](images/index_page.png)
-
-## Windows电脑：
-
-依赖和步骤跟MAC一致，执行命令终端换成Windows命令行即可。
-
-## 加微信技术支持
-![image](https://github.com/YiXiaoCuoHuaiFenZi/examsystem/assets/33883485/ba578fe5-a843-4829-bda4-9b476475b050)
-
