@@ -54,64 +54,64 @@ func (qe Question) View() revel.Result {
 	lawQuestionInfo := make(map[string]int)
 	constructionQuestionInfo := make(map[string]int)
 
-	if v, ok := singleChoiceSummary["交通"]; ok {
+	if v, ok := singleChoiceSummary["食安员"]; ok {
 		trafficQuestionInfo["单选"] = v
 	} else {
 		trafficQuestionInfo["单选"] = 0
 	}
 
-	if v, ok := multipleChoiceSummary["交通"]; ok {
+	if v, ok := multipleChoiceSummary["食安员"]; ok {
 		trafficQuestionInfo["多选"] = v
 	} else {
 		trafficQuestionInfo["多选"] = 0
 	}
 
-	if v, ok := trueFalseSummary["交通"]; ok {
+	if v, ok := trueFalseSummary["食安员"]; ok {
 		trafficQuestionInfo["判断"] = v
 	} else {
 		trafficQuestionInfo["判断"] = 0
 	}
 
-	if v, ok := singleChoiceSummary["司法"]; ok {
+	if v, ok := singleChoiceSummary["食安员test1"]; ok {
 		lawQuestionInfo["单选"] = v
 	} else {
 		lawQuestionInfo["单选"] = 0
 	}
 
-	if v, ok := multipleChoiceSummary["司法"]; ok {
+	if v, ok := multipleChoiceSummary["食安员test1"]; ok {
 		lawQuestionInfo["多选"] = v
 	} else {
 		lawQuestionInfo["多选"] = 0
 	}
 
-	if v, ok := trueFalseSummary["司法"]; ok {
+	if v, ok := trueFalseSummary["食安员test1"]; ok {
 		lawQuestionInfo["判断"] = v
 	} else {
 		lawQuestionInfo["判断"] = 0
 	}
 
-	if v, ok := singleChoiceSummary["建筑"]; ok {
+	if v, ok := singleChoiceSummary["食安员test2"]; ok {
 		constructionQuestionInfo["单选"] = v
 	} else {
 		constructionQuestionInfo["单选"] = 0
 	}
 
-	if v, ok := multipleChoiceSummary["建筑"]; ok {
+	if v, ok := multipleChoiceSummary["食安员test2"]; ok {
 		constructionQuestionInfo["多选"] = v
 	} else {
 		constructionQuestionInfo["多选"] = 0
 	}
 
-	if v, ok := trueFalseSummary["建筑"]; ok {
+	if v, ok := trueFalseSummary["食安员test2"]; ok {
 		constructionQuestionInfo["判断"] = v
 	} else {
 		constructionQuestionInfo["判断"] = 0
 	}
 
 	results := make(map[string]map[string]int)
-	results["交通"] = trafficQuestionInfo
-	results["司法"] = lawQuestionInfo
-	results["建筑"] = constructionQuestionInfo
+	results["食安员"] = trafficQuestionInfo
+	results["食安员test1"] = lawQuestionInfo
+	results["食安员test2"] = constructionQuestionInfo
 
 	qe.ViewArgs["results"] = results
 	qe.ViewArgs["adminIDCard"] = qe.Session["adminIDCard"]
