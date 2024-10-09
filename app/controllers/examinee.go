@@ -10,6 +10,8 @@ import (
 	"strings"
 
 	"github.com/revel/revel"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
 )
 
 type Examinee struct {
@@ -125,11 +127,42 @@ func (ex Examinee) BatchSignUp() revel.Result {
 	return ex.Redirect(Examinee.SignUp)
 }
 
+// 读取csv文件
+func ReadCSVFile(filePath string) ([]string, error) {
+	// 打开文件
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	// 读取文件内容
+	reader := csv.NewReader(transform.NewReader(file, simplifiedchinese.GBK.NewDecoder()))
+	var records []string
+	for {
+		record, err := reader.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+		records = append(records, record...)
+	}
+	return records, nil
+}
 func (ex Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 	// TODO csv文件默认是ascII编码， 需要进行处理
-	// 暂时强制要求手动转换为utf8
-	reader := csv.NewReader(CSVFile)
-	defer CSVFile.Close()
+	// 调用ReadCSVFile将csv文件内容读取到records中
+	filePath := CSVFile.Name()
+	reader, err := ReadCSVFile(filePath)
+	if err != nil {
+		log.Println(err)
+		ex.Flash.Error(err.Error())
+		return ex.Redirect(Examinee.SignUp)
+	}
+
+	// reader := csv.NewReader(CSVFile)
+	// defer CSVFile.Close()
 
 	manager, err := models.NewDBManager()
 	if err != nil {
@@ -142,15 +175,7 @@ func (ex Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 	var i = 0
 	var errorMsg = ""
 	var successMsg = ""
-	for {
-		lineArr, err := reader.Read()
-		if err == io.EOF {
-			break
-		} else if err != nil {
-			log.Println(err)
-			ex.Flash.Error(err.Error())
-			return ex.Redirect(Examinee.SignUp)
-		}
+	for _, lineArr := range reader {
 
 		//忽略第一行表头
 		i += 1
@@ -159,10 +184,10 @@ func (ex Examinee) PostBatchSignUp(CSVFile *os.File) revel.Result {
 		}
 
 		var e models.SignUpExaminee
-		e.Name = lineArr[0]
-		e.IDCard = lineArr[1]
-		e.Gender = lineArr[2]
-		e.Mobile = lineArr[3]
+		e.Name = string(lineArr[0])
+		e.IDCard = string(lineArr[1])
+		e.Gender = string(lineArr[2])
+		e.Mobile = string(lineArr[3])
 		// 密码为身份证后六位
 		e.Password = e.IDCard[len(e.IDCard)-6:]
 		e.ConfirmPassword = e.Password
